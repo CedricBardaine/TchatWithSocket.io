@@ -1,6 +1,10 @@
 /*global io*/
 var socket = io();
 
+
+
+
+
 /**
  * sending message
  */
@@ -64,7 +68,7 @@ function scrollToBottom() {
  * New user connection
  */
 socket.on('user-login', function (user) {
-  $('#users').append($('<li class="' + user.username + ' new" style="border: 3px solid '+user.usercolor+'">').html(user.username) ) ;
+  $('#users').append($('<li class="' + user.username + ' new" style="border: 3px solid '+user.usercolor+'">').html(user.username + '<span class="typing">typing...</span>') ) ;
   setTimeout(function () {
     $('#users li.new').removeClass('new');
   }, 1000);
@@ -76,4 +80,39 @@ socket.on('user-login', function (user) {
 socket.on('user-logout', function (user) {
   var selector = '#users li.' + user.username;
   $(selector).remove();
+});
+
+
+// ####################################################################
+// ####################################################################
+// ####################################################################
+// Handling typing user
+
+var typingTimer ; 
+var isTyping = false ; 
+
+$('#m').keypress(function () {
+  clearTimeout(typingTimer);
+  if (!isTyping) {
+    socket.emit('start-typing');
+    isTyping = true;
+  }
+});
+
+$('#m').keyup(function () {
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(function () {
+    if (isTyping) {
+      socket.emit('stop-typing');
+      isTyping = false;
+    }
+  }, 500);
+});
+
+
+socket.on('update-typing', function (typingUsers) {
+  $('#users li span.typing').hide();
+  for (i = 0; i < typingUsers.length; i++) {
+    $('#users li.' + typingUsers[i].username + ' span.typing').show();
+  }
 });

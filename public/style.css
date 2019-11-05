@@ -86,7 +86,7 @@ section#chat #users li {
 /* ##################################################### */
 /* ##################################################### */
 /* ##################################################### */
-/* Pour le login : */
+/* for login : */
 
 body#logged-out {
     background: rgb(223, 223, 223);
@@ -138,7 +138,7 @@ section#login button {
 
 
 section#chat #messages li span.username {
-	display: inline-block;
+    display: inline-block;
 	padding: 6px 10px;
 	margin-right: 5px;
 	color: white;
@@ -148,14 +148,25 @@ section#chat #messages li span.username {
 }
 
 section#chat #messages li.logout {
-	color: red !important;
+    color: red !important;
 }
 section#chat #messages li.login {
-	color: green !important;
+    color: green !important;
 }
 section#chat #messages li span.info {
-	display: inline-block;
+    display: inline-block;
 	padding: 3px 10px;
 	margin-right: 5px;
 	border-radius: 5px;
+}
+
+
+/* ##################################################### */
+/* ##################################################### */
+/* ##################################################### */
+section#chat #users li span.typing {
+    float: right;
+    font-style: italic;
+    color: #2C3E50;
+    display: none;    
 }

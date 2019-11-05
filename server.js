@@ -4,6 +4,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 var users = [] ; 
+var typingUsers = [] ;
 
 /**
 * Handling HTTP requests of users by sending them files from 'public' directory
@@ -78,6 +79,9 @@ io.on('connection', function (socket) {
         users.splice(userIndex, 1 ) ; 
       }
       io.emit('user-logout', user) ; 
+
+      var typingUserIndex = typingUsers.indexOf(user) ; 
+      if (typingUserIndex !== -1) typingUsers.splice(typingUserIndex, 1 ) ; 
     }
   });
   
@@ -90,7 +94,26 @@ io.on('connection', function (socket) {
     io.emit('chat-message', message);
     console.log('Message from : ' + user.username);
   });
-});
+
+  
+  
+  socket.on('start-typing' , function() {
+    if(typingUsers.indexOf(user) === -1) {
+      typingUsers.push(user) ; 
+    }
+    io.emit('update-typing', typingUsers) ; 
+  });
+  socket.on('stop-typing', function() {
+    var typingUserIndex = typingUsers.indexOf(user) ; 
+    if(typingUserIndex !== -1) {
+      typingUsers.splice(typingUserIndex, 1) ; 
+    }
+    io.emit('update-typing', typingUsers) ; 
+  });
+ 
+  
+  
+  });
 
 /**
 * running the server and listening to new connection on port 3000
