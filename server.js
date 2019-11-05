@@ -6,7 +6,7 @@ var io = require('socket.io')(http);
 var users = [] ; 
 
 /**
-* Gestion des requêtes HTTP des utilisateurs en leur renvoyant les fichiers du dossier 'public'
+* Handling HTTP requests of users by sending them files from 'public' directory
 */
 app.use("/", express.static(__dirname + "/public"));
 
@@ -14,7 +14,7 @@ io.on('connection', function (socket) {
   var user ; 
   
   /**
-  * Connexion d'un utilisateur via le formulaire
+  * When user connect from the form
   */
   socket.on('user-login', function (loggedUser, callback) {
     var userIndex = -1 ; 
@@ -36,7 +36,7 @@ io.on('connection', function (socket) {
         type: 'login'
       };
       var broadcastServiceMessage = {
-        text: 'User : '+user.username+' logged in',
+        text: user.username+' logged in',
         type: 'login'
       };
       socket.emit('service-message', userServiceMessage) ; 
@@ -61,14 +61,14 @@ io.on('connection', function (socket) {
   });
   
   /**
-  * Log de connexion et de déconnexion des utilisateurs
+  * Logs of connnection and disconnection from users
   */
   console.log('a user connected');
   socket.on('disconnect', function () {
     if( user !== undefined){
       console.log('user disconected : ' + user.username);
       var serviceMessage = {
-        text: 'User : ' + user.username + ' disconnected.',
+        text: user.username + ' disconnected.',
         type: 'logout' 
       }; 
       socket.broadcast.emit('service-message', serviceMessage) ;
@@ -82,18 +82,18 @@ io.on('connection', function (socket) {
   });
   
   /**
-  * Réception de l'événement 'chat-message' et réémission vers tous les utilisateurs
+  * Get the event 'chat-message' and re-sending to all users
   */
   socket.on('chat-message', function (message) {
-    message.username = user.username; // On intègre ici le nom d'utilisateur au message
+    message.username = user.username; 
     message.usercolor = user.usercolor;
     io.emit('chat-message', message);
-    console.log('Message de : ' + user.username);
+    console.log('Message from : ' + user.username);
   });
 });
 
 /**
-* Lancement du serveur en écoutant les connexions arrivant sur le port 3000
+* running the server and listening to new connection on port 3000
 */
 http.listen(3000, function () {
   console.log('Server is listening on localhost:3000');
