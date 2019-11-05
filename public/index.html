@@ -1,20 +1,35 @@
 <!doctype html>
 <html>
-  <head>
-    <link rel="stylesheet" href="style.css" />
-    <title>Socket.IO chat</title>
-    <style>
-    </style>
-  </head>
-  <body>
-    <section id="chat">
-      <ul id="messages"></ul>
-      <form action="">
-        <input id="m" autocomplete="off" /><button>Send</button>
-      </form>
-    </section>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="client.js"></script>
-  </body>
+<head>
+  <link rel="stylesheet" href="style.css" />
+  <title>Tchat</title>
+  <style>
+  </style>
+</head>
+<body id="logged-out">
+  
+  
+  <section id="chat">
+    <ul id="messages"></ul><ul id="users"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+  </section>
+  
+  <section id="login">
+    <form action="">
+      <label for="u">Your username :<br> 
+        <input type="text" id="u" autocomplete="off" autofocus /> <br>
+        <input type="color" name="" id="idColor">
+        <p>
+          <button>Log in</button>
+        </p>
+      </label>
+    </form>
+  </section>
+  
+  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
+</body>
 </html>
